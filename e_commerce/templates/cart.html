@@ -1,0 +1,12 @@
+{% extends 'blank_layout.html' %}
+{% block content %}
+    <!--If have any messages to show-->
+    {% if messages %}
+        <!--show the message if any-->
+        {% for message in messages %}
+            <li class="{{ message.tags }}">{{ message }}</li>
+        {% endfor %}
+    {% else %}
+        {% include 'cart_container.html' %}
+    {% endif %}
+{% endblock content %}

@@ -1,0 +1,60 @@
+{% load static %}
+<!-- <div class="categories">
+   <div class="small-container">
+       <div class="row">
+           <div class="col-3">
+               <img src="{% static 'images/category1a.jpg' %}">
+           </div>
+           <div class="col-3">
+               <img src="{% static 'images/category2a.jpg' %}">
+           </div>
+           <div class="col-3">
+               <img src="{% static 'images/category3c.jpg' %}">
+           </div>
+       </div>
+   </div>
+</div> -->
+
+<!-- Featured Products -->
+
+<div class="small-container">
+   <h2 class="title">Featured Products</h2>
+   <div class="row">
+       {% for product in featured_products %}
+       <div class="col-4">
+           <a href="{% url 'detail_product' product.id %}">
+               <img src="{{ product.image.url }}"></a>
+           <h4>{{ product.title }}</h4> 
+           <div class="rating">
+               <i class="fa fa-star"></i>
+               <i class="fa fa-star"></i>
+               <i class="fa fa-star"></i>
+               <i class="fa fa-star"></i>
+               <i class="fa fa-star-o"></i>
+           </div>
+           <p>${{ product.price }}</p>
+       </div>
+      {% endfor %}
+      <a href="/product_list" class="btn">Explore All Featured Products &#8594;</a>
+   </div>
+   <h2 class="title">Latest Products</h2>
+   <div class="row">
+       {% for product in latest_products %}
+       <div class="col-4">
+           <a href="{% url 'detail_product' product.id %}">
+               <img src="{{ product.image.url }}"></a>
+           <h4>{{ product.title }}</h4>
+           <div class="rating">
+               <i class="fa fa-star"></i>
+               <i class="fa fa-star"></i>
+               <i class="fa fa-star"></i>
+               <i class="fa fa-star"></i>
+               <i class="fa fa-star-o"></i>
+           </div>
+           <p>${{ product.price }}</p>
+       </div>
+      {% endfor %}
+      <a href="/product_list" class="btn">Explore All Latest Products &#8594;</a>
+   </div>
+</div>
+

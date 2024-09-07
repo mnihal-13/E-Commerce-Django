@@ -1,0 +1,47 @@
+{% load static %}
+<div class="small-container single-product">
+    <div class="row">
+        <div class="col-2">
+            <img src="{{ product.image.url }}" width="100%" id="ProductImg">
+
+            <!-- <div class="small-img-row">
+                <div class="small-img-col">
+                    <img src="{% static 'images/galler1.jpg' %}" width="100%" class="small-img">
+                </div>
+                <div class="small-img-col">
+                    <img src="{% static 'images/gal-2.webp' %}" width="100%" class="small-img">
+                </div>
+                <div class="small-img-col">
+                    <img src="{% static 'images/gal-3.jpg' %}" width="100%" class="small-img">
+                </div>
+                <div class="small-img-col">
+                    <img src="{% static 'images/gal-4.jpg' %}" width="100%" class="small-img">
+                </div>
+            </div> -->
+
+        </div>
+        <div class="col-2">
+            <p>{{ product.title }}</p>
+            <h1>{{ product.title }}</h1>
+            <h4>${{ product.price }}</h4>
+            <!-- <select>
+                <option>Select Size</option>
+                <option>5</option>
+                <option>6</option>
+                <option>7</option>
+                <option>8</option>
+                <option>9</option>
+            </select> -->
+            <form method="post" action="{% url 'add_to_cart' %}" enctype="multipart/form-data">
+            {% csrf_token %}
+            <input type="hidden" value="{{ product.id }}" name="product_id"/>
+            <input type="number" name="quantity" value="1">
+            <button type="submit" class="btn">Add To Cart</button>
+        </form>
+
+            <h3>Product Details <i class="fa fa-indent"></i></h3>
+            <br>
+            <p>{{ product.description }}</p>
+        </div>
+    </div>
+</div>

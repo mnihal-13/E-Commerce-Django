@@ -1,0 +1,26 @@
+{% load static %}
+<div class="navbar">
+    <div class="logo">
+        <a href="{% url 'home' %}"><img src="{% static 'images/mainlogo.png' %}" alt="logo" width="125px"></a>
+    </div>
+    <nav>
+        <ul id="MenuItems">
+            <li><a href="{% url 'home' %}">Home</a></li>
+            <li><a href="{% url 'list_products' %}">Products</a></li>
+            <!--If the user is not login of authenticated Show the account link on the menu bar-->
+            {% if not user.is_authenticated %}
+            <li><a href="{% url 'account' %}">Signin/Login</a></li>
+            {% else %}
+            <!--If the user is authenticated or loged in show the Order option and logout option in the menu bar-->
+            <li><a href="{% url 'orders' %}">Orders</a></li>
+            <li><a href="{% url 'logout' %}">Logout</a></li>
+            {% endif %}
+        </ul>
+    </nav>
+    <!--If the user is loged in show the cart icon and -->
+    {% if user.is_authenticated %}
+    <a href="{% url 'cart' %}"><img src="{% static 'images/cart2.png' %}" width="30px" height="30px"></a>
+    {% endif %}
+    <!--When the screen is small show the menu toggle option to show the options -->
+    <img src="{% static  'images/menu.png' %}" class="menu-icon" onclick="menutoggle()">
+</div>
