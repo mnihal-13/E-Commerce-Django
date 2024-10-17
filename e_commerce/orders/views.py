@@ -106,3 +106,11 @@ def add_to_cart(request):
             ordered_item.quantity=ordered_item.quantity+quantity
             ordered_item.save()
     return redirect('cart')
+
+# @login_required(login_url='account')        
+# def review(request):
+# #     user=request.user
+# #     customer=user.customer_profile
+# #     all_orders=Order.objects.filter(owner=customer).exclude(order_status=Order.CART_STAGE)
+# #     context={'orders':all_orders}
+#     return render(request,'review.html')

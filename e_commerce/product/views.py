@@ -1,6 +1,10 @@
-from django.shortcuts import render
-from . models import Product
+from django.shortcuts import render,redirect
+from . models import Product, Customer, Review
 from django.core.paginator import Paginator
+from django.contrib.auth.decorators import login_required
+from .forms import ReviewForm
+from django.http import HttpResponseForbidden
+
 
 # Create your views here.
 def index(request):
@@ -35,6 +39,53 @@ def list_products(request):
 def detail_product(request,pk):
     # To fetch the product clicked by the id
     product=Product.objects.get(pk=pk)
+    reviews = product.reviews.all()
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.product = product
+            review.user = Customer.objects.get(user=request.user)
+            review.save()
+            return redirect('detail_product', pk=product.id)
+    else:
+        form = ReviewForm()
     # To pass the context to the template through dictionary
-    context={'product':product}
+    context={'product':product,
+             'reviews': reviews,
+             'form': form}
     return render(request,'product_detail.html',context)
+
+@login_required(login_url='account')        
+def review(request,pk):
+    product=Product.objects.get(pk=pk)
+    reviews = product.reviews.all()
+    if request.method == 'POST':
+        #Initializes the review form with the POST data from the request.
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            review = form.save(commit=False)
+            review.product = product
+            #Which user is reviewed
+            review.user = Customer.objects.get(user=request.user)
+            review.save()
+            return redirect('detail_product', pk=product.id)
+    else:
+        form = ReviewForm()
+        # return render(request,'product_detail.html')
+    # To pass the context to the template through dictionary
+    context={'product':product,
+            'reviews': reviews,
+            'form': form}
+    return render(request,'review.html',context)
+
+@login_required(login_url='account')
+def delete_review(request, review_id, product_id):
+    #Fetches the review based on the Id and the product belongs to
+    review = Review.objects.get(id=review_id, product_id=product_id)
+    #Checks if the user is the current logged-in user (to prevent unauthorized deletion).
+    if review.user.user == request.user:
+        review.delete()
+        return redirect('detail_product', pk=product_id)
+    else:
+        return HttpResponseForbidden("You are not allowed to delete this review.")

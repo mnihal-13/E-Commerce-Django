@@ -1,0 +1,23 @@
+{% extends "blank_layout.html" %}
+{% load static %}
+{% block content %}
+
+{% comment %} <form action="" method="POST">
+    {% csrf_token %}
+    <label for="">Title</label>
+    <input type="text" name="title" placeholder="Title of your review">
+    <label for="">Rating (1-10)</label>
+    <input type="number" name="rating" id="" placeholder="Rating of the Poduct">
+    <label for="">Review</label>
+    <input type="text" placeholder="Write your review">
+    <button type="submit"  name="review" class="btn">Submit</button>
+</form> {% endcomment %}
+
+<h3 align="center">Add a review</h3>
+<form method="POST" action="{% url 'review' pk=product.id %}">
+{% csrf_token %}
+{{ form.as_p }}
+<button type="submit">Submit Review</button>
+</form>
+
+{% endblock content %}

@@ -36,12 +36,45 @@
             {% csrf_token %}
             <input type="hidden" value="{{ product.id }}" name="product_id"/>
             <input type="number" name="quantity" value="1">
-            <button type="submit" class="btn">Add To Cart</button>
-        </form>
+            <button type="submit" class="btn-add-cart">Add To Cart</button>
+            </form>
 
             <h3>Product Details <i class="fa fa-indent"></i></h3>
             <br>
             <p>{{ product.description }}</p>
+
+            {% comment %} <h3>Add a review</h3>
+            <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit">Submit Review</button>
+            </form> {% endcomment %}
+
+            <a  class='btn-review' href="{% url 'review' pk=product.id %}">Add Your Review</a>
+
         </div>
     </div>
+     
 </div>
+<div class='container-review'>
+    <h3>Reviews</h3>
+    <ul>
+    {% for review in reviews %}
+        <li>
+        <strong>{{ review.user }}:</strong> {{ review.rating }} stars
+        <p>{{ review.comment }}</p>
+        <small>Reviewed on {{ review.created_at }}</small>
+        {% if review.user.user == request.user %}
+        <div class=''>
+            <form method="POST" action="{% url 'delete_review' review_id=review.id product_id=product.id %}">
+                {% csrf_token %}
+                <button type="submit" class="btn-trash">Delete</button>
+            </form>
+        </div>
+    {% endif %}
+        </li>
+    {% empty %}
+        <li>No reviews yet.</li>
+    {% endfor %}
+    </ul>
+</div> 

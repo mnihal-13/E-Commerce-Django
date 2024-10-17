@@ -1,4 +1,6 @@
 from django.db import models
+from customers.models import Customer
+
 
 #Models for product
 
@@ -26,3 +28,11 @@ class Product(models.Model):
 
     def __str__(self) -> str:
         return self.title
+    
+class Review(models.Model):
+    product=models.ForeignKey(Product,related_name='reviews',on_delete=models.CASCADE)
+    user=models.ForeignKey(Customer,on_delete=models.CASCADE)
+    title=models.TextField()
+    rating=models.IntegerField()
+    comment=models.TextField(max_length=200)
+    created_at = models.DateTimeField(auto_now_add=True)
